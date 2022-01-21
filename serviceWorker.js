@@ -38,7 +38,13 @@ self.addEventListener("activate", (e) => {
 
 //Fetch, si existe retorna del cache, de lo contrario de internet.
 self.addEventListener("fetch", (e) => {
-    e.respondWith(() => {
-        caches.match(e.request).then((res) => (res ? res : fetch(e.request)));
-    })
+    e.respondWith(
+        caches.match(e.request).then((res) => {
+            if (res) {
+                return res;
+            }
+
+            return fetch(e.request);
+        })
+    );
 });
